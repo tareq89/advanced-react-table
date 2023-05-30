@@ -1,0 +1,10 @@
+{
+  "name": "advanced-react-table",
+  "version": "1.0.0",
+  "description": "Implement an advanced table component in React that supports searching, filtering & sorting",
+  "main": "index.js",
+  "repository": "https://github.com/tareq89/advanced-react-table",
+  "author": "muhammed tareq aziz",
+  "license": "MIT",
+  "private": true
+}
