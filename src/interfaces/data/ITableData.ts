@@ -12,18 +12,18 @@ export interface IPersonData {
 
 export interface IDataApiResponse {
   data: { [key: string]: any }[];
-  currentCount: number;
-  totalCount: number;
+  totalFound: number;
   sortOrder?: "asc" | "desc";
-  sortyBy?: string;
+  sortBy?: string;
   start: number;
   limit: number;
 }
 
 export interface IDataApiQueryParams {
   sortOrder?: "asc" | "desc";
-  sortyBy?: string;
+  sortBy?: string;
   start: number;
   limit: number;
+  search?: string;
   [key: string]: any;
 }

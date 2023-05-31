@@ -14,8 +14,8 @@ export const callMockApi = (param: IApiParams): Promise<any> => {
 };
 
 export const getTableData = (params: IDataApiQueryParams): Promise<{ data: IDataApiResponse }> => {
-  const { sortOrder, sortyBy, start, limit, ...filters } = params;
-  // console.log(sortOrder, sortyBy, start, limit, filters);
+  const { sortOrder, sortBy, start, limit, search, ...filters } = params;
+  // console.log(sortOrder, sortBy, start, limit, filters);
   let __tableData = tableData;
 
   let keys = Object.keys(filters).filter((key) => !!filters[key]);
@@ -24,19 +24,32 @@ export const getTableData = (params: IDataApiQueryParams): Promise<{ data: IData
       let response = false;
       keys.forEach((filterKey) => {
         const filterValue = filters[filterKey];
-        if (!!x[filterKey] && (x[filterKey] === filterValue || (typeof x[filterKey] === "string" && x[filterKey].includes(filterValue))))
+        if (!!x[filterKey] && (x[filterKey] === filterValue || (typeof x[filterKey] === "string" && x[filterKey].includes(filterValue)))) {
           response = true;
+        }
       });
       return response;
     });
   }
 
-  if (sortOrder && sortyBy) {
+  if (search) {
+    __tableData = __tableData.filter((x: { [key: string]: any }) => {
+      const keys = Object.keys(x);
+      let response = false;
+      keys.forEach((key) => {
+        if (String(x[key]).includes(search)) response = true;
+      });
+      return response;
+    });
+  }
+  if (sortOrder && sortBy) {
     __tableData = sortArray(__tableData, {
-      by: sortyBy,
+      by: sortBy,
       order: sortOrder,
     });
   }
+
+  const totalFound = __tableData.length;
 
   if (!isNaN(start) && !isNaN(limit)) {
     const upperLimit = start + limit;
@@ -52,11 +65,10 @@ export const getTableData = (params: IDataApiQueryParams): Promise<{ data: IData
     data: {
       data: __tableData,
       sortOrder: params.sortOrder,
-      sortyBy: params.sortyBy,
+      sortBy: params.sortBy,
       start: params.start,
       limit: params.limit,
-      currentCount: 0,
-      totalCount: 0,
+      totalFound: totalFound,
     },
   });
 };

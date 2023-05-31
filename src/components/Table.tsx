@@ -5,6 +5,11 @@ import { SortUpIcon } from "../icons/SortUpIcon";
 import { SortDownIcon } from "../icons/SortDownIcon";
 import { Input } from "./Input";
 import { Select } from "./Select";
+import { Th } from "./Th";
+import { LimitSelect } from "./LimitSelect";
+import { count } from "console";
+import { TotalFound } from "./TotalFound";
+import { ThFilter } from "./ThFilter";
 
 export interface ITableColumns {
   title: string;
@@ -25,88 +30,76 @@ export interface ITableProps {
 }
 export const Table = (props: ITableProps) => {
   const [dataSource, setDataSource] = useState<{ [key: string]: any }[]>([]);
+  const [totalFound, setTotalFound] = useState(0);
   const [queryParams, setQueryParams] = useState<IDataApiQueryParams>({
     sortOrder: undefined,
-    sortyBy: undefined,
+    sortBy: undefined,
     start: 0,
     limit: 10,
   });
-  const [count, setCount] = useState<{ currentCount: number; totalCount: number }>({ currentCount: 0, totalCount: 0 });
   useEffect(() => {
     if (props.dataSource) setDataSource(props.dataSource);
     else if (props.getDataFunc) {
       props.getDataFunc(queryParams).then((response) => {
         setDataSource(response.data);
-        setCount(response);
+        setTotalFound(response.totalFound);
       });
     }
   }, [props.dataSource, props.getDataFunc, queryParams]);
 
   return (
-    <table className={style.table}>
-      <thead>
-        <tr>
-          {props.columns.map((x, i) => (
-            <th
-              key={i}
-              style={{ width: `${x.width ? x.width : x.title.length + 120}px` }}
-              onClick={() => {
-                setQueryParams({ ...queryParams, sortyBy: x.fieldName, sortOrder: queryParams.sortOrder === "asc" ? "desc" : "asc" });
-              }}
-            >
-              <div>
-                <span className={style.title} style={{ width: `${x.width ? x.width : x.title.length + 100}px` }}>
-                  {x.title}
-                </span>
-                <div className={style.sort}>
-                  <span className={queryParams.sortyBy === x.fieldName && queryParams.sortOrder === "asc" ? style.active : ""}>
-                    <SortUpIcon />
-                  </span>
-                  <span className={queryParams.sortyBy === x.fieldName && queryParams.sortOrder === "desc" ? style.active : ""}>
-                    <SortDownIcon />
-                  </span>
-                </div>
-              </div>
-            </th>
-          ))}
-        </tr>
-        <tr>
-          {props.columns.map((x, i) => (
-            <th key={i}>
-              {x.filterType && (
-                <>
-                  {x.filterType === "input" && (
-                    <Input
-                      title={x.title}
-                      onChange={(value) => setQueryParams({ ...queryParams, [x.fieldName]: value === "" ? undefined : value })}
-                    />
-                  )}
-                  {x.filterType === "select" && x.filterOptions && x.filterOptions.length > 0 && (
-                    <Select
-                      filterOptions={x.filterOptions}
-                      onChange={(value) => {
-                        console.log(value);
-                        setQueryParams({ ...queryParams, [x.fieldName]: value === "" ? undefined : value });
-                      }}
-                    />
-                  )}
-                </>
-              )}
-            </th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {dataSource.map((data, j) => (
-          <tr key={j}>
-            {props.columns.map((column, i) => (
-              <td key={i} style={{ width: `${column.width ? column.width : column.title.length + 120}px` }}>
-                {data[column.fieldName]}
-              </td>
+    <div className={style.tableContainer}>
+      <div className={style.tableTopControls}>
+        <LimitSelect onChange={(value: number) => setQueryParams({ ...queryParams, limit: value })} />
+        <TotalFound totalFound={totalFound} start={queryParams.start} limit={queryParams.limit} />
+        <Input
+          className={style.search}
+          title={"Search"}
+          onChange={(value) => setQueryParams({ ...queryParams, search: value === "" ? undefined : value })}
+        />
+      </div>
+      <table className={style.table}>
+        <thead>
+          <tr>
+            {props.columns.map((x, i) => (
+              <Th
+                key={i}
+                onClick={() =>
+                  setQueryParams({
+                    ...queryParams,
+                    sortBy: x.fieldName,
+                    sortOrder: queryParams.sortOrder === "asc" ? "desc" : "asc",
+                  })
+                }
+                column={x}
+                sortBy={queryParams.sortBy}
+                sortOrder={queryParams.sortOrder}
+              />
             ))}
           </tr>
-        ))}
-      </tbody>
-    </table>
+          <tr>
+            {props.columns.map((x, i) => (
+              <ThFilter
+                key={i}
+                onChange={(value) => setQueryParams({ ...queryParams, start: 0, [x.fieldName]: value === "" ? undefined : value })}
+                filterType={x.filterType}
+                filterOptions={x.filterOptions}
+              />
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {dataSource.map((data, j) => (
+            <tr key={j}>
+              {props.columns.map((column, i) => (
+                <td key={i} style={{ width: `${column.width ? column.width : column.title.length + 120}px` }}>
+                  {data[column.fieldName]}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };
