@@ -4,11 +4,12 @@ import style from "../sass/table.module.sass";
 import { SortUpIcon } from "../icons/SortUpIcon";
 import { SortDownIcon } from "../icons/SortDownIcon";
 import { Input } from "./Input";
+import { Select } from "./Select";
 
 export interface ITableColumns {
   title: string;
   filterType?: "input" | "select";
-  filterOption?: { label: string; value: any }[];
+  filterOptions?: { label: string; value: any }[];
   sorting?: boolean;
   fieldName: string;
   sortOrder: number;
@@ -80,14 +81,14 @@ export const Table = (props: ITableProps) => {
                       onChange={(value) => setQueryParams({ ...queryParams, [x.fieldName]: value === "" ? undefined : value })}
                     />
                   )}
-                  {x.filterType === "select" && x.filterOption && x.filterOption.length > 0 && (
-                    <select>
-                      {x.filterOption.map((option, j) => (
-                        <option key={j} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </select>
+                  {x.filterType === "select" && x.filterOptions && x.filterOptions.length > 0 && (
+                    <Select
+                      filterOptions={x.filterOptions}
+                      onChange={(value) => {
+                        console.log(value);
+                        setQueryParams({ ...queryParams, [x.fieldName]: value === "" ? undefined : value });
+                      }}
+                    />
                   )}
                 </>
               )}

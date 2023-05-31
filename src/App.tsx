@@ -32,7 +32,7 @@ function App() {
             fieldName: "gender",
             sortOrder: 4,
             filterType: "select",
-            filterOption: [
+            filterOptions: [
               { label: "Male", value: "Male" },
               { label: "Female", value: "Female" },
             ],
