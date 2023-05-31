@@ -1,6 +1,6 @@
-import { ITableData } from "../../interfaces/data/ITableData";
+import { IPersonData } from "../../interfaces/data/ITableData";
 
-export let tableData: ITableData[] = [
+export let tableData: IPersonData[] = [
   {
     id: "ae18338a-0eb0-4ee2-9bf8-156e89a27038",
     name: "Dill",

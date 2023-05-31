@@ -1,4 +1,4 @@
-export interface ITableData {
+export interface IPersonData {
   id: string;
   name: string;
   email: string;
@@ -10,19 +10,19 @@ export interface ITableData {
   country: string;
 }
 
-export interface ITableDataResponse {
-  data: ITableData[];
-  sortOrder: "asc" | "desc";
-  sortyBy: string;
-  start: number;
-  limit: number;
+export interface IDataApiResponse {
+  data: { [key: string]: any }[];
   currentCount: number;
   totalCount: number;
+  sortOrder?: "asc" | "desc";
+  sortyBy?: string;
+  start: number;
+  limit: number;
 }
 
-export interface ITableDataApiQueryParams {
-  sortOrder: "asc" | "desc";
-  sortyBy: string;
+export interface IDataApiQueryParams {
+  sortOrder?: "asc" | "desc";
+  sortyBy?: string;
   start: number;
   limit: number;
   [key: string]: any;
