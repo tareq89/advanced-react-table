@@ -47,6 +47,8 @@ export const getTableData = (params: IDataApiQueryParams): Promise<{ data: IData
       by: sortBy,
       order: sortOrder,
     });
+  } else {
+    __tableData = sortArray(__tableData, { by: "id", order: "asc" });
   }
 
   const totalFound = __tableData.length;
