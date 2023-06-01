@@ -1,6 +1,7 @@
 import style from "./sass/App.module.sass";
 import { getPersonData } from "./api/api";
 import { WindowedTable } from "./components/WindowedTable";
+import * as Sentry from "@sentry/react";
 
 function App() {
   return (
@@ -91,4 +92,4 @@ function App() {
   );
 }
 
-export default App;
+export default Sentry.withProfiler(App);
