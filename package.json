@@ -19,6 +19,7 @@
     "lodash.debounce": "^4.0.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-intersection-observer": "^9.4.3",
     "react-scripts": "5.0.1",
     "sass": "^1.62.1",
     "sort-array": "^4.1.5",

@@ -61,15 +61,19 @@ export const getTableData = (params: IDataApiQueryParams): Promise<{ data: IData
     });
   }
 
-  return Promise.resolve({
-    data: {
-      data: __tableData,
-      sortOrder: params.sortOrder,
-      sortBy: params.sortBy,
-      start: params.start,
-      limit: params.limit,
-      totalFound: totalFound,
-    },
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({
+        data: {
+          data: __tableData,
+          sortOrder: params.sortOrder,
+          sortBy: params.sortBy,
+          start: params.start,
+          limit: params.limit,
+          totalFound: totalFound,
+        },
+      });
+    }, 1 * 1000);
   });
 };
 export const insertTableData = (data: { [key: string]: any } & { id?: string }): Promise<{ data: { success: boolean } }> => {

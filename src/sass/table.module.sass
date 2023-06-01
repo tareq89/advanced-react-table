@@ -1,9 +1,10 @@
+
 .tableContainer
   display: block
   max-height: 500px
   overflow-y: scroll
   overflow-x: hidden
-
+  position: relative
   .tableTopControls
     display: flex
     flex-direction: row
@@ -22,6 +23,7 @@
     table-layout: fixed
 
     tbody
+
     thead
       position: sticky
       top: 50px
@@ -30,6 +32,13 @@
       padding: 8px
       word-wrap: break-word
     tr
+      .loaderPosition
+        position: absolute
+        display: flex
+        justify-content: center
+        z-index: 10
+        align-items: center
+        width: 100%
       &:nth-child(even)
         background-color: #f2f2f2
     tr
