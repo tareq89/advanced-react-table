@@ -1,5 +1,5 @@
-import { IApiParams } from "../../interfaces/data/IApiParams";
-import { IDataApiQueryParams, IDataApiResponse, IPersonData } from "../../interfaces/data/ITableData";
+import { IApiParams, IDataApiQueryParams, IDataApiResponse } from "../../interfaces/data/IApiParams";
+import { IPersonData } from "../../interfaces/data/IPersonData";
 import { tableData as tData } from "./tableData";
 import { UUID } from "uuid-generator-ts";
 import sortArray from "sort-array";

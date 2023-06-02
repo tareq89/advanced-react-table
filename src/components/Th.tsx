@@ -1,10 +1,9 @@
-import React from "react";
 import { SortDownIcon } from "../icons/SortDownIcon";
 import { SortUpIcon } from "../icons/SortUpIcon";
-import style from "../sass/th.module.sass";
-import { IWindowedTableColumns } from "./WindowedTable";
 import { Input } from "./Input";
 import { Select } from "./Select";
+import { IWindowedTableColumns } from "../interfaces/component/ITableConfig";
+import style from "../sass/th.module.sass";
 
 export const Th = (props: {
   column: IWindowedTableColumns;
@@ -16,12 +15,12 @@ export const Th = (props: {
   return (
     <div className={style.th} style={{ width: `${props.column.width}px` }}>
       <div onClick={props.onClick}>
-        <span
+        <div
           className={style.title}
           style={{ width: `${props.column.width - 30}px`, ...(props.column.fieldName === "index" && { padding: "12px 0px" }) }}
         >
           {props.column.title}
-        </span>
+        </div>
 
         {props.column.sortable && (
           <div className={style.sort}>
@@ -34,12 +33,10 @@ export const Th = (props: {
           </div>
         )}
       </div>
-      <div>
-        {props.column.filterType === "input" && (
-          <Input style={{ width: props.column.width - 50 }} title={props.column.title || ""} onChange={props.onChange} />
-        )}
+      <div style={{ width: props.column.width - 50, display: "block", margin: "auto" }}>
+        {props.column.filterType === "input" && <Input title={props.column.title || ""} onChange={props.onChange} />}
         {props.column.filterType === "select" && props.column.filterOptions && props.column.filterOptions.length > 0 && (
-          <Select style={{ width: props.column.width - 50 }} filterOptions={props.column.filterOptions} onChange={props.onChange} />
+          <Select filterOptions={props.column.filterOptions} onChange={props.onChange} />
         )}
       </div>
     </div>

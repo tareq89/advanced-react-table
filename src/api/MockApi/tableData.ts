@@ -1,4 +1,4 @@
-import { IPersonData } from "../../interfaces/data/ITableData";
+import { IPersonData } from "../../interfaces/data/IPersonData";
 
 export let tableData: IPersonData[] = [
   {
