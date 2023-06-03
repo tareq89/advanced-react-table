@@ -35,8 +35,9 @@ jobs:
         run: |
           git config --global user.name $user_name
           git config --global user.email $user_email
-          git remote set-url origin https://github.com/tareq89/advanced-react-table.git
-          npm run deploy
+          # git remote set-url origin  https://github.com/tareq89/advanced-react-table.git
+          git remote set-url origin https://github.com/${{ github.repository }}.git
+          yarn deploy
         env:
           user_name: "tareq89"
           user_email: "tareqaziz.aust.cse@gmail.com"
