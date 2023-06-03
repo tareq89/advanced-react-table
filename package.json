@@ -71,6 +71,7 @@
     "@types/lodash.debounce": "^4.0.7",
     "@types/react-virtualized": "^9.21.22",
     "@types/sort-array": "^4.1.0",
+    "gh-pages": "^5.0.0",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.2"
   }
