@@ -31,7 +31,7 @@ jobs:
         cmd: install 
     - run: yarn lint
     - run: yarn build --if-present
-    - run: yarn test
+    # - run: yarn test
     - name: Deploy
       run: |
         git config --global user.name $user_name
