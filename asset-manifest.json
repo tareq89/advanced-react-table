@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/advanced-react-table/static/css/main.dbf88b73.css",
+    "main.js": "/advanced-react-table/static/js/main.3c5c2863.js",
+    "index.html": "/advanced-react-table/index.html",
+    "main.dbf88b73.css.map": "/advanced-react-table/static/css/main.dbf88b73.css.map",
+    "main.3c5c2863.js.map": "/advanced-react-table/static/js/main.3c5c2863.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.dbf88b73.css",
+    "static/js/main.3c5c2863.js"
+  ]
+}
