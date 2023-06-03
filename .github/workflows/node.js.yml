@@ -5,13 +5,12 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -20,26 +19,26 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: Run install
-      uses: borales/actions-yarn@v4
-      with:
-        cmd: install 
-    - run: yarn lint
-    - run: yarn build --if-present
-    # - run: yarn test
-    - name: Deploy
-      run: |
-        git config --global user.name muh
-        git config --global user.email $user_email
-        git remote set-url origin https://github.com/tareq89/advanced-react-table.git
-        npm run deploy
-      env:
-        user_name: 'tareq89'
-        user_email: 'tareqaziz.aust.cse@gmail.com'
-        github_token: ${{ secrets.CI }}
-        repository: ${{ github.repository }}
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Run install
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install
+      - run: yarn lint
+      - run: yarn build --if-present
+      # - run: yarn test
+      - name: Deploy
+        run: |
+          git config --global user.name $user_name
+          git config --global user.email $user_email
+          git remote set-url origin https://github.com/tareq89/advanced-react-table.git
+          npm run deploy
+        env:
+          user_name: "tareq89"
+          user_email: "tareqaziz.aust.cse@gmail.com"
+          github_token: ${{ secrets.CI }}
+          repository: ${{ github.repository }}
