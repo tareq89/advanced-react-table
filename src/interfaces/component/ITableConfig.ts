@@ -6,6 +6,10 @@ export interface ITableConfig {
   headerHeight: number;
   rowHeight: number;
   name: string;
+  sortOrder?: "asc" | "desc";
+  sortBy?: string;
+  filterField?: string;
+  filterValue?: any;
 }
 
 export interface IWindowedTableColumns {

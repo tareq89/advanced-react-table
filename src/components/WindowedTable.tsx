@@ -3,14 +3,14 @@ import { Column, Table } from "react-virtualized";
 import { Th } from "./Th";
 import { Loader } from "./Loader";
 import { IDataApiQueryParams } from "../interfaces/data/IApiParams";
-import * as Sentry from "@sentry/react";
-import style from "../sass/windowedTable.module.sass";
-import "react-virtualized/styles.css";
 import { ITableConfig, IWindowedTableProps } from "../interfaces/component/ITableConfig";
 import { getPersonalizedTableConfig } from "../api/tableconfig";
 import { defaultPersonTableConfig } from "../Constants";
 import { Input } from "./Input";
 import { SettingsIcon } from "../icons/SettingsIcon";
+import * as Sentry from "@sentry/react";
+import style from "../sass/windowedTable.module.sass";
+import "react-virtualized/styles.css";
 
 export const WindowedTable = (props: IWindowedTableProps) => {
   const [tableConfig, setTableConfig] = useState<ITableConfig>(defaultPersonTableConfig);
@@ -37,6 +37,7 @@ export const WindowedTable = (props: IWindowedTableProps) => {
     if (props.getDataFunc && loadingType === "PAGINATION") {
       setQueryParams({ ...queryParams, start: queryParams.start + queryParams.limit });
     }
+    // eslint-disable-next-line
   }, [loadingType]);
 
   useEffect(() => {
@@ -54,6 +55,7 @@ export const WindowedTable = (props: IWindowedTableProps) => {
           setLoading(false);
         });
     }
+    // eslint-disable-next-line
   }, [props.dataSource, props.getDataFunc, queryParams]);
   return (
     <Sentry.ErrorBoundary fallback={<p>An error has occurred</p>}>
