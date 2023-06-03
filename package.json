@@ -4,6 +4,7 @@
   "description": "Implement an advanced table component in React that supports searching, filtering & sorting",
   "main": "index.js",
   "repository": "https://github.com/tareq89/advanced-react-table",
+  "homepage": "https://tareq89.github.io/advanced-react-table",
   "author": "muhammed tareq aziz",
   "license": "MIT",
   "private": true,
@@ -35,7 +36,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "postinstall": "husky install",
-    "lint": "lint-staged  --verbose"
+    "lint": "lint-staged  --verbose",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "lint-staged": {
     "*.ts": [
