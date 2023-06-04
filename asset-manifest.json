@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/advanced-react-table/static/css/main.9025977c.css",
-    "main.js": "/advanced-react-table/static/js/main.8145896f.js",
+    "main.css": "/advanced-react-table/static/css/main.4b5cf927.css",
+    "main.js": "/advanced-react-table/static/js/main.e751f94b.js",
     "index.html": "/advanced-react-table/index.html",
-    "main.9025977c.css.map": "/advanced-react-table/static/css/main.9025977c.css.map",
-    "main.8145896f.js.map": "/advanced-react-table/static/js/main.8145896f.js.map"
+    "main.4b5cf927.css.map": "/advanced-react-table/static/css/main.4b5cf927.css.map",
+    "main.e751f94b.js.map": "/advanced-react-table/static/js/main.e751f94b.js.map"
   },
   "entrypoints": [
-    "static/css/main.9025977c.css",
-    "static/js/main.8145896f.js"
+    "static/css/main.4b5cf927.css",
+    "static/js/main.e751f94b.js"
   ]
 }
