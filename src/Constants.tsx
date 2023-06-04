@@ -1,3 +1,4 @@
+import { ColumnActionsForPerson } from "./components/ColumnActionsForPerson";
 import { ITableConfig } from "./interfaces/component/ITableConfig";
 
 export const defaultPersonTableConfigID = "justsomerandomidforspecifyingatableconfig";
@@ -10,6 +11,7 @@ export const defaultPersonTableConfig: ITableConfig = {
   columns: [
     {
       title: "Index",
+      columnType: "index",
       fieldName: "index",
       sortOrder: 0,
       sortable: false,
@@ -19,6 +21,7 @@ export const defaultPersonTableConfig: ITableConfig = {
     {
       title: "Name",
       fieldName: "name",
+      columnType: "data",
       sortOrder: 1,
       sortable: true,
       filterType: "input",
@@ -28,6 +31,7 @@ export const defaultPersonTableConfig: ITableConfig = {
     {
       title: "Email",
       fieldName: "email",
+      columnType: "data",
       sortOrder: 2,
       sortable: true,
       filterType: "input",
@@ -37,6 +41,7 @@ export const defaultPersonTableConfig: ITableConfig = {
     {
       title: "Age",
       fieldName: "age",
+      columnType: "data",
       sortOrder: 3,
       sortable: true,
       filterType: "input",
@@ -46,6 +51,7 @@ export const defaultPersonTableConfig: ITableConfig = {
     {
       title: "Gender",
       fieldName: "gender",
+      columnType: "data",
       sortOrder: 4,
       sortable: true,
       filterType: "select",
@@ -59,6 +65,7 @@ export const defaultPersonTableConfig: ITableConfig = {
     {
       title: "Address",
       fieldName: "address",
+      columnType: "data",
       sortOrder: 5,
       sortable: true,
       filterType: "input",
@@ -68,6 +75,7 @@ export const defaultPersonTableConfig: ITableConfig = {
     {
       title: "City",
       fieldName: "city",
+      columnType: "data",
       sortOrder: 6,
       sortable: true,
       filterType: "input",
@@ -77,6 +85,7 @@ export const defaultPersonTableConfig: ITableConfig = {
     {
       title: "Postcode",
       fieldName: "postcode",
+      columnType: "data",
       sortOrder: 7,
       sortable: true,
       filterType: "input",
@@ -86,11 +95,23 @@ export const defaultPersonTableConfig: ITableConfig = {
     {
       title: "Country",
       fieldName: "country",
+      columnType: "data",
       sortOrder: 8,
       sortable: true,
       filterType: "input",
       width: 150,
       visible: true,
+    },
+    {
+      title: "Action",
+      fieldName: "",
+      columnType: "action",
+      sortOrder: 8,
+      sortable: false,
+      filterType: "input",
+      width: 150,
+      visible: true,
+      render: (props) => <ColumnActionsForPerson {...props} />,
     },
   ],
 };

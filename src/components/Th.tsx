@@ -13,16 +13,10 @@ export const Th = (props: {
   sortOrder?: "asc" | "desc";
 }) => {
   return (
-    <div className={style.th} style={{ width: `${props.column.width}px` }}>
-      <div onClick={props.onClick}>
-        <div
-          className={style.title}
-          style={{ width: `${props.column.width - 30}px`, ...(props.column.fieldName === "index" && { padding: "12px 0px" }) }}
-        >
-          {props.column.title}
-        </div>
-
-        {props.column.sortable && (
+    <div className={style.th} style={{ ...(props.column.columnType !== "data" && { padding: "20px 0px" }) }}>
+      <div onClick={() => props.column.columnType === "data" && props.onClick()}>
+        <div className={style.title}>{props.column.title}</div>
+        {props.column.columnType === "data" && props.column.sortable && (
           <div className={style.sort}>
             <span className={props.sortBy === props.column.fieldName && props.sortOrder === "asc" ? style.active : ""}>
               <SortUpIcon />
@@ -33,14 +27,17 @@ export const Th = (props: {
           </div>
         )}
       </div>
-      <div style={{ width: props.column.width - 50, display: "block", margin: "auto" }}>
-        {props.column.filterType === "input" && (
-          <Input title={props.column.title || ""} defaultValue={props.column.filterValue} onChange={props.onChange} />
-        )}
-        {props.column.filterType === "select" && props.column.filterOptions && props.column.filterOptions.length > 0 && (
-          <Select defaultValue={props.column.filterValue} filterOptions={props.column.filterOptions} onChange={props.onChange} />
-        )}
-      </div>
+
+      {props.column.columnType === "data" && (
+        <>
+          {props.column.filterType === "input" && (
+            <Input title={props.column.title || ""} defaultValue={props.column.filterValue} onChange={props.onChange} />
+          )}
+          {props.column.filterType === "select" && props.column.filterOptions && props.column.filterOptions.length > 0 && (
+            <Select defaultValue={props.column.filterValue} filterOptions={props.column.filterOptions} onChange={props.onChange} />
+          )}
+        </>
+      )}
     </div>
   );
 };

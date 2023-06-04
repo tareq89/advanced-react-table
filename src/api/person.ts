@@ -44,7 +44,7 @@ export const updatePersonData = (data: IPersonData): Promise<{ success: boolean 
 
 export const deletePersonData = (id: string): Promise<{ success: boolean }> => {
   return callApi({
-    url: "/updateTableData",
+    url: "/deleteTableData",
     method: "delete",
     params: { id },
   })
