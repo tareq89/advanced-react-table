@@ -3,11 +3,18 @@ import { CancelIcon } from "../icons/CancelIcon";
 import style from "../sass/input.module.sass";
 import { useRef } from "react";
 
-export const Input = (props: { title: string; style?: React.CSSProperties; onChange: (value: string) => void; className?: string }) => {
+export const Input = (props: {
+  title: string;
+  defaultValue?: any;
+  style?: React.CSSProperties;
+  onChange: (value: string) => void;
+  className?: string;
+}) => {
   const first = useRef<HTMLInputElement>(null);
   return (
     <div className={`${style.inputContainer} ${props.className}`}>
       <input
+        defaultValue={props.defaultValue}
         style={props.style}
         placeholder={props.title}
         ref={first}
@@ -21,7 +28,7 @@ export const Input = (props: { title: string; style?: React.CSSProperties; onCha
           }
         }}
       >
-        <CancelIcon />
+        <CancelIcon style={{ width: "10px", height: "10px" }} />
       </span>
     </div>
   );

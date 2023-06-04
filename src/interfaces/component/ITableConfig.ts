@@ -1,27 +1,26 @@
 import { IDataApiQueryParams, IDataApiResponse } from "../data/IApiParams";
 
 export interface ITableConfig {
+  id: string;
   columns: IWindowedTableColumns[];
+  name: string;
   height: number;
   headerHeight: number;
   rowHeight: number;
-  name: string;
   sortOrder?: "asc" | "desc";
   sortBy?: string;
-  filterField?: string;
-  filterValue?: any;
 }
 
 export interface IWindowedTableColumns {
   title: string;
   filterType?: "input" | "select";
   filterOptions?: { label: string; value: any }[];
-  filterValue?: any;
   fieldName: string;
   sortable: boolean;
-  sortOrder: number;
   width: number;
   visible: boolean;
+  sortOrder: number;
+  filterValue?: any;
 }
 
 export interface IWindowedTableProps {

@@ -5,16 +5,20 @@ import { deletePersonData, getPersonData, insertPersonData, updatePersonData } f
 
 function App() {
   return (
-    <div className={style.App}>
-      <div className={style.tableContainer}>
-        <WindowedTable
-          getDataFunc={getPersonData}
-          insertRowDataFunc={insertPersonData}
-          updateRowDataFunc={updatePersonData}
-          deleteRowDataFunc={deletePersonData}
-        />
+    <>
+      <div id="modal-container" role="dialog"></div>
+      <div id="modal-container-2" role="dialog"></div>
+      <div className={style.App}>
+        <div className={style.tableContainer}>
+          <WindowedTable
+            getDataFunc={getPersonData}
+            insertRowDataFunc={insertPersonData}
+            updateRowDataFunc={updatePersonData}
+            deleteRowDataFunc={deletePersonData}
+          />
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

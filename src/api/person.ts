@@ -1,6 +1,6 @@
 import { IPersonData } from "../interfaces/data/IPersonData";
 import { IDataApiQueryParams, IDataApiResponse } from "../interfaces/data/IApiParams";
-import * as Sentry from "@sentry/react";
+import { captureException } from "@sentry/react";
 import { callApi } from "./api";
 
 export const getPersonData = (params: IDataApiQueryParams): Promise<IDataApiResponse> => {
@@ -11,7 +11,7 @@ export const getPersonData = (params: IDataApiQueryParams): Promise<IDataApiResp
   })
     .then((response) => response.data)
     .catch((error) => {
-      Sentry.captureException({ method: "getPersonData", error });
+      captureException({ method: "getPersonData", error });
       return Promise.reject(error);
     });
 };
@@ -24,7 +24,7 @@ export const insertPersonData = (data: IPersonData): Promise<{ success: boolean 
   })
     .then((response) => response.data)
     .catch((error) => {
-      Sentry.captureException({ method: "insertPersonData", error });
+      captureException({ method: "insertPersonData", error });
       return Promise.reject(error);
     });
 };
@@ -37,7 +37,7 @@ export const updatePersonData = (data: IPersonData): Promise<{ success: boolean 
   })
     .then((response) => response.data)
     .catch((error) => {
-      Sentry.captureException({ method: "updatePersonData", error });
+      captureException({ method: "updatePersonData", error });
       return Promise.reject(error);
     });
 };
@@ -50,7 +50,7 @@ export const deletePersonData = (id: string): Promise<{ success: boolean }> => {
   })
     .then((response) => response.data)
     .catch((error) => {
-      Sentry.captureException({ method: "deletePersonData", error });
+      captureException({ method: "deletePersonData", error });
       return Promise.reject(error);
     });
 };

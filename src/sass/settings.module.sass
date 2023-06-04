@@ -1,0 +1,47 @@
+.settingsForm
+  display: block
+  line-height: 30px
+  .formElements
+    height: 500px
+    overflow-y: scroll
+  .action
+    display: flex
+    flex-direction: row
+    justify-content: flex-end
+    button
+      border-radius: 5px
+      padding: 10px 20px
+      margin-left: 10px
+      background-color: white
+      border: 1px solid lightgray
+      cursor: pointer
+    .cancel
+      background-color: #ff00003b
+  .element
+    display: flex
+    flex-direction: column
+
+    label
+      text-align: left
+    input
+      border-radius: 4px
+      height: 30px
+      border: 1px solid lightgray
+      padding: 0px 10px
+
+    select
+      border-radius: 4px
+      height: 30px
+      border: 1px solid lightgray
+      padding: 0px 10px
+  .columnConfigGrid
+    display: flex
+    flex-direction: row
+    flex-flow: wrap
+    justify-content: space-between
+    .columnConfig
+      border: 1px solid lightgray
+      margin: 5px
+      padding: 5px
+      width: 45%
+      border-radius: 5px

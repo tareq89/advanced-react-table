@@ -3,6 +3,8 @@ import { IPersonData } from "../../interfaces/data/IPersonData";
 import { tableData as tData } from "./tableData";
 import { UUID } from "uuid-generator-ts";
 import sortArray from "sort-array";
+import { ITableConfig } from "../../interfaces/component/ITableConfig";
+import { defaultPersonTableConfig } from "../../Constants";
 
 let tableData: IPersonData[] = tData;
 export const callMockApi = (param: IApiParams): Promise<any> => {
@@ -10,6 +12,9 @@ export const callMockApi = (param: IApiParams): Promise<any> => {
   if (param.url === "/insertTableData") return insertTableData(param.data as any);
   if (param.url === "/updateTableData") return updateTableData(param.data as any);
   if (param.url === "/deleteTableData") return deleteTableData(param.params as any);
+  if (param.url === "/getPersonalizedTableConfig") return getPersonalizedTableConfig(param.params as any);
+  if (param.url === "/getDefaultPersonalizedTableConfig") return getDefaultPersonalizedTableConfig();
+  if (param.url === "/updatePersonalizedTableConfig") return updatePersonalizedTableConfig(param.data as any);
   return Promise.resolve();
 };
 
@@ -94,3 +99,35 @@ export const deleteTableData = (params: { id: string }): Promise<{ data: { succe
   tableData = tableData.filter((x) => x.id !== params.id);
   return Promise.resolve({ data: { success: true } });
 };
+function getPersonalizedTableConfig(params: { id: string }): Promise<{ success: boolean; data?: ITableConfig }> {
+  let value = localStorage.getItem(params.id);
+  if (value) {
+    const config: ITableConfig = JSON.parse(value);
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({ success: true, data: config });
+      }, 1 * 1000);
+    });
+  }
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({ success: false });
+    }, 1 * 1000);
+  });
+}
+
+function getDefaultPersonalizedTableConfig(): Promise<{ success: boolean; data?: ITableConfig }> {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({ success: true, data: defaultPersonTableConfig });
+    }, 1 * 1000);
+  });
+}
+function updatePersonalizedTableConfig(config: ITableConfig): Promise<{ success: boolean }> {
+  localStorage.setItem(config.id, JSON.stringify(config));
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({ success: true });
+    }, 1 * 1000);
+  });
+}

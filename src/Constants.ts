@@ -1,6 +1,8 @@
 import { ITableConfig } from "./interfaces/component/ITableConfig";
 
+export const defaultPersonTableConfigID = "justsomerandomidforspecifyingatableconfig";
 export const defaultPersonTableConfig: ITableConfig = {
+  id: defaultPersonTableConfigID,
   height: 600,
   headerHeight: 70,
   rowHeight: 30,

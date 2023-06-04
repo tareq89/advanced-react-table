@@ -34,9 +34,11 @@ export const Th = (props: {
         )}
       </div>
       <div style={{ width: props.column.width - 50, display: "block", margin: "auto" }}>
-        {props.column.filterType === "input" && <Input title={props.column.title || ""} onChange={props.onChange} />}
+        {props.column.filterType === "input" && (
+          <Input title={props.column.title || ""} defaultValue={props.column.filterValue} onChange={props.onChange} />
+        )}
         {props.column.filterType === "select" && props.column.filterOptions && props.column.filterOptions.length > 0 && (
-          <Select filterOptions={props.column.filterOptions} onChange={props.onChange} />
+          <Select defaultValue={props.column.filterValue} filterOptions={props.column.filterOptions} onChange={props.onChange} />
         )}
       </div>
     </div>

@@ -43,7 +43,7 @@
   "lint-staged": {
     "*.ts": [
       "prettier --write",
-      "eslint --fix --max-warnings 0  \"./src/**/*.{ts,tsx}\""
+      "eslint --fix --max-warnings 0 \"./src/**/*.{ts,tsx}\""
     ]
   },
   "prettier": {
@@ -73,6 +73,7 @@
     "@types/sort-array": "^4.1.0",
     "gh-pages": "^5.0.0",
     "husky": "^8.0.3",
-    "lint-staged": "^13.2.2"
+    "lint-staged": "^13.2.2",
+    "prettier": "^2.8.8"
   }
 }

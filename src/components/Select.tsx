@@ -1,6 +1,7 @@
 import style from "../sass/select.module.sass";
 
 export const Select = (props: {
+  defaultValue?: any;
   style?: React.CSSProperties;
   filterOptions: { label: string; value: any }[];
   onChange: (value: any) => void;
@@ -8,6 +9,7 @@ export const Select = (props: {
   return (
     <div className={style.selectContainer}>
       <select
+        defaultValue={props.defaultValue}
         style={props.style}
         onChange={(e) => {
           console.log(e);

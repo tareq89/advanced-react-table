@@ -3,7 +3,7 @@ import React from "react";
 export const CancelIcon = (props: { style?: React.CSSProperties }) => {
   return (
     <svg
-      style={{ width: "10px", height: "10px", ...props.style }}
+      style={props.style}
       xmlns="http://www.w3.org/2000/svg"
       version="1.1"
       id="Capa_1"
