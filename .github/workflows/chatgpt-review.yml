@@ -1,5 +1,4 @@
 name: ChatGPT Review
-
 on: [pull_request]
 
 jobs:
@@ -7,13 +6,22 @@ jobs:
     name: ChatGPT Review
     runs-on: ubuntu-latest
     steps:
-      - uses: feiskyer/ChatGPT-Reviewer@latest
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'  # Specify your Python version
+
+      - name: Install dependencies
+        run: |
+          pip install openai==0.28  # Pin to an older version
+
+      - uses: feiskyer/ChatGPT-Reviewer@v0
         name: ChatGPT Review
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          # OPENAI_API_BASE: ${{ secrets.OPENAI_API_BASE }}
         with:
-          model: "gpt-3.5-turbo"  # Specify the model if needed
-          temperature: 0.2  # Adjust as required
           comment_per_file: true
