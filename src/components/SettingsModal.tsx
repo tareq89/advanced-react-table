@@ -4,74 +4,98 @@ import { ITableConfig } from "../interfaces/component/ITableConfig";
 import style from "../sass/settings.module.sass";
 import { getDefaultPersonalizedTableConfig, updatePersonalizedTableConfig } from "../api/tableconfig";
 
-export const SettingsModal = (props: {
+export const SettingsModal = ({
+  setShowModal,
+  tableCOnfig,
+  setTableConfig,
+}: {
   setShowModal: (show: boolean) => void;
   tableCOnfig: ITableConfig;
   setTableConfig: (tableCOnfig: ITableConfig) => void;
 }) => {
-  const [localTableConfig, setLocalTableConfig] = useState(props.tableCOnfig);
+  const [localTableConfig, setLocalTableConfig] = useState(tableCOnfig);
   const [apiCallInProgress, setApiCallInProgress] = useState(false);
 
-  const setTableConfig = (fieldName: string, value: any) => {
-    setLocalTableConfig({ ...localTableConfig, [fieldName]: value });
+  const updateLocalTableConfig = (fieldName: string, value: any) => {
+    setLocalTableConfig((prevConfig) => ({ ...prevConfig, [fieldName]: value }));
   };
 
-  const setTableColumnConfig = (fieldName: string, columnPropertyName: string, value: any) => {
-    setLocalTableConfig({
-      ...localTableConfig,
-      columns: localTableConfig.columns.map((column) => {
-        if (column.fieldName === fieldName) {
-          column = { ...column, [columnPropertyName]: value };
-        }
-        return column;
-      }),
-    });
+  const updateColumnConfig = (fieldName: string, columnPropertyName: string, value: any) => {
+    setLocalTableConfig((prevConfig) => ({
+      ...prevConfig,
+      columns: prevConfig.columns.map((column) =>
+        column.fieldName === fieldName ? { ...column, [columnPropertyName]: value } : column
+      ),
+    }));
   };
 
   const updateTableConfig = async (restoreDefault?: boolean) => {
     setApiCallInProgress(true);
     let _tableConfig = localTableConfig;
+
     if (restoreDefault) {
-      const defaultConfigResponse = await getDefaultPersonalizedTableConfig();
-      if (defaultConfigResponse.success && defaultConfigResponse.data) {
-        _tableConfig = defaultConfigResponse.data;
+      try {
+        const defaultConfigResponse = await getDefaultPersonalizedTableConfig();
+        if (defaultConfigResponse.success && defaultConfigResponse.data) {
+          _tableConfig = defaultConfigResponse.data;
+        }
+      } catch (error) {
+        console.error("Failed to get default config", error);
       }
     }
 
-    let updateResponse = await updatePersonalizedTableConfig(_tableConfig);
-    if (updateResponse.success) {
-      props.setTableConfig(_tableConfig);
+    try {
+      const updateResponse = await updatePersonalizedTableConfig(_tableConfig);
+      if (updateResponse.success) {
+        setTableConfig(_tableConfig);
+      }
+    } catch (error) {
+      console.error("Failed to update table config", error);
+    } finally {
+      setApiCallInProgress(false);
+      setShowModal(false);
     }
+  };
 
-    setApiCallInProgress(false);
-    props.setShowModal(false);
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    updateTableConfig();
   };
 
   return (
-    <Modal title="Table Settings" onClose={() => props.setShowModal(false)} loading={apiCallInProgress}>
-      <form name="Table Settings" className={style.settingsForm}>
+    <Modal title="Table Settings" onClose={() => setShowModal(false)} loading={apiCallInProgress}>
+      <form name="Table Settings" className={style.settingsForm} onSubmit={handleSubmit}>
         <div className={style.formElements}>
           <h2>Table Config</h2>
           <div className={style.element}>
             <label>Name</label>
-            <input type="text" name="name" defaultValue={localTableConfig.name} onChange={(e) => setTableConfig("name", e.target.value)} />
+            <input
+              type="text"
+              name="name"
+              value={localTableConfig.name}
+              onChange={(e) => updateLocalTableConfig("name", e.target.value)}
+            />
           </div>
           <div className={style.element}>
             <label>Sort By</label>
-            <select name="sortBy" defaultValue={localTableConfig.sortBy} onChange={(e) => setTableConfig("sortBy", e.target.value)}>
-              {props.tableCOnfig.columns.map((x, i) => (
-                <option key={i} value={x.fieldName}>
-                  {x.title}
+            <select
+              name="sortBy"
+              value={localTableConfig.sortBy}
+              onChange={(e) => updateLocalTableConfig("sortBy", e.target.value)}
+            >
+              {tableCOnfig.columns.map((column, i) => (
+                <option key={i} value={column.fieldName}>
+                  {column.title}
                 </option>
               ))}
             </select>
           </div>
           <div className={style.element}>
-            <label>Name</label>
+            <label>Sort Order</label>
             <select
               name="sortOrder"
-              defaultValue={localTableConfig.sortOrder}
-              onChange={(e) => setTableConfig("sortOrder", e.target.value)}
+              value={localTableConfig.sortOrder}
+              onChange={(e) => updateLocalTableConfig("sortOrder", e.target.value)}
             >
               <option value={"asc"}>Ascending</option>
               <option value={"desc"}>Descending</option>
@@ -80,112 +104,97 @@ export const SettingsModal = (props: {
 
           <h2>Column Config</h2>
           <div className={style.columnConfigGrid}>
-            {localTableConfig.columns.map((x, i) => {
-              return (
-                <div key={i} className={style.columnConfig}>
-                  <h4>{x.title}</h4>
-                  <div className={style.element}>
-                    <label>Title</label>
+            {localTableConfig.columns.map((column, i) => (
+              <div key={i} className={style.columnConfig}>
+                <h4>{column.title}</h4>
+                <div className={style.element}>
+                  <label>Title</label>
+                  <input
+                    type="text"
+                    name={`title-${column.fieldName}`}
+                    value={column.title}
+                    onChange={(e) => updateColumnConfig(column.fieldName, "title", e.target.value)}
+                  />
+                </div>
+                <div className={style.element}>
+                  <label>Default Filter Value</label>
+                  {column.filterType === "input" ? (
                     <input
                       type="text"
-                      name="title"
-                      defaultValue={x.title}
-                      onChange={(e) => setTableColumnConfig(x.fieldName, "title", e.target.value)}
+                      name={`filterValue-${column.fieldName}`}
+                      value={column.filterValue}
+                      onChange={(e) => updateColumnConfig(column.fieldName, "filterValue", e.target.value)}
                     />
-                  </div>
-                  <div className={style.element}>
-                    <label>Default Filter Value</label>
-                    {x.filterType === "input" && (
-                      <input
-                        type="text"
-                        name="filterValue"
-                        defaultValue={x.filterValue}
-                        onChange={(e) => setTableColumnConfig(x.fieldName, "filterValue", e.target.value)}
-                      />
-                    )}
-                    {x.filterType === "select" && x.filterOptions && (
+                  ) : (
+                    column.filterOptions && (
                       <select
-                        name="filterValue"
-                        defaultValue={x.filterValue}
-                        onChange={(e) => setTableColumnConfig(x.fieldName, "filterValue", e.target.value)}
+                        name={`filterValue-${column.fieldName}`}
+                        value={column.filterValue}
+                        onChange={(e) => updateColumnConfig(column.fieldName, "filterValue", e.target.value)}
                       >
-                        {x.filterOptions.map((x, i) => (
-                          <option key={i} value={x.value}>
-                            {x.label}
+                        {column.filterOptions.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
                           </option>
                         ))}
                       </select>
-                    )}
-                  </div>
-                  <div className={style.element}>
-                    <label>Is Sortable</label>
-                    <select
-                      name="sortable"
-                      defaultValue={x.sortable ? "true" : "false"}
-                      onChange={(e) => setTableColumnConfig(x.fieldName, "sortable", e.target.value === "true")}
-                    >
-                      <option value={"true"}>Yes</option>
-                      <option value={"false"}>No</option>
-                    </select>
-                  </div>
-                  <div className={style.element}>
-                    <label>Column Order</label>
-                    <input
-                      type="number"
-                      name="sortOrder"
-                      defaultValue={x.sortOrder}
-                      onChange={(e) => setTableColumnConfig(x.fieldName, "sortOrder", e.target.value)}
-                    />
-                  </div>
-                  <div className={style.element}>
-                    <label>Column Width</label>
-                    <input
-                      type="number"
-                      name="width"
-                      defaultValue={x.width}
-                      onChange={(e) => setTableColumnConfig(x.fieldName, "width", e.target.value === "true")}
-                    />
-                  </div>
-                  <div className={style.element}>
-                    <label>Is Visible</label>
-                    <select
-                      name="visible"
-                      defaultValue={x.visible ? "true" : "false"}
-                      onChange={(e) => setTableColumnConfig(x.fieldName, "visible", e.target.value === "true")}
-                    >
-                      <option value={"true"}>Yes</option>
-                      <option value={"false"}>No</option>
-                    </select>
-                  </div>
+                    )
+                  )}
                 </div>
-              );
-            })}
+                <div className={style.element}>
+                  <label>Is Sortable</label>
+                  <select
+                    name={`sortable-${column.fieldName}`}
+                    value={column.sortable ? "true" : "false"}
+                    onChange={(e) => updateColumnConfig(column.fieldName, "sortable", e.target.value === "true")}
+                  >
+                    <option value={"true"}>Yes</option>
+                    <option value={"false"}>No</option>
+                  </select>
+                </div>
+                <div className={style.element}>
+                  <label>Column Order</label>
+                  <input
+                    type="number"
+                    name={`sortOrder-${column.fieldName}`}
+                    value={column.sortOrder}
+                    onChange={(e) => updateColumnConfig(column.fieldName, "sortOrder", Number(e.target.value))}
+                  />
+                </div>
+                <div className={style.element}>
+                  <label>Column Width</label>
+                  <input
+                    type="number"
+                    name={`width-${column.fieldName}`}
+                    value={column.width}
+                    onChange={(e) => updateColumnConfig(column.fieldName, "width", Number(e.target.value))}
+                  />
+                </div>
+                <div className={style.element}>
+                  <label>Is Visible</label>
+                  <select
+                    name={`visible-${column.fieldName}`}
+                    value={column.visible ? "true" : "false"}
+                    onChange={(e) => updateColumnConfig(column.fieldName, "visible", e.target.value === "true")}
+                  >
+                    <option value={"true"}>Yes</option>
+                    <option value={"false"}>No</option>
+                  </select>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
         <hr />
         <div className={style.action}>
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              updateTableConfig(true);
-            }}
-          >
+          <button type="button" onClick={() => updateTableConfig(true)}>
             Restore Defaults
           </button>
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              updateTableConfig();
-            }}
-          >
-            Submit
-          </button>
+          <button type="submit">Submit</button>
           <button
             className={style.cancel}
-            onClick={(e) => {
-              e.preventDefault();
-              props.setShowModal(false);
-            }}
+            type="button"
+            onClick={() => setShowModal(false)}
           >
             Cancel
           </button>
